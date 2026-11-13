@@ -1,0 +1,143 @@
+type Value = 
+ variant {
+   "bool": bool;
+   float: float64;
+   "int": int;
+   "nat": nat;
+   "null";
+   "text": text;
+ };
+type UserRole = 
+ variant {
+   admin;
+   guest;
+   user;
+ };
+type UserId = principal;
+type Timestamp = int;
+type Result__1 = 
+ record {
+   hasMore: bool;
+   rows: vec vec Cell;
+ };
+type Result_3 = 
+ variant {
+   err: Error;
+   ok;
+ };
+type Result_2 = 
+ variant {
+   err: PostError;
+   ok;
+ };
+type Result_1 = 
+ variant {
+   err: PostError;
+   ok: PostView;
+ };
+type Result = 
+ variant {
+   err: ProfileError;
+   ok: ProfileView;
+ };
+type ProfileView = 
+ record {
+   bio: text;
+   createdAt: Timestamp;
+   displayName: text;
+   id: UserId;
+   updatedAt: Timestamp;
+   username: text;
+ };
+type ProfileError = 
+ variant {
+   invalidDisplayName: text;
+   invalidUsername: text;
+   notRegistered;
+   notSignedIn;
+   usernameTaken: text;
+ };
+type PostView = 
+ record {
+   author: UserId;
+   authorName: text;
+   authorUsername: text;
+   content: text;
+   createdAt: Timestamp;
+   id: nat;
+   title: text;
+   updatedAt: Timestamp;
+ };
+type PostError = 
+ variant {
+   invalidContent: text;
+   invalidTitle: text;
+   notAuthor;
+   notFound: nat;
+   notRegistered;
+   notSignedIn;
+ };
+type Error = 
+ variant {
+   AmbiguousAttribute: record {
+                         field: text;
+                         sources: vec text;
+                       };
+   FrontendOriginMismatch: record {
+                             expected: vec text;
+                             got: text;
+                           };
+   FrontendOriginsNotConfigured;
+   MalformedCandid;
+   MissingField: text;
+   MixedSsoSources: record {
+                      otherKeys: vec text;
+                      ssoKeys: vec text;
+                    };
+   NoAttributes;
+   Stale: record {ageNs: nat;};
+   UnknownNonce;
+   UntrustedSsoSource: record {domain: text;};
+ };
+type Cell = 
+ record {
+   name: text;
+   value: Value;
+ };
+/// Composition root for the blogging backend.
+/// 
+/// Owns the stable state and wires the domain mixins and the OQL exposure.
+/// No business logic lives here — every endpoint is provided by a mixin.
+service : {
+  _initialize_access_control: () -> ();
+  _internet_identity_sign_in_finish: () -> (Result_3);
+  _internet_identity_sign_in_start: () -> (blob);
+  assignCallerUserRole: (user: principal, role: UserRole) -> ();
+  /// Create a post. Requires a signed-in caller with a registered profile.
+  createPost: (title: text, content: text) -> (Result_1);
+  /// Create the caller's profile on first sign-in.
+  /// Requires a signed-in (non-anonymous) caller.
+  createProfile: (displayName: text, username: text, bio: text) -> (Result);
+  /// Delete the caller's own post. Requires a signed-in caller.
+  deletePost: (id: nat) -> (Result_2);
+  execute: (qJson: text) -> (Result__1) query;
+  getApiDoc: () -> (text) query;
+  getCallerUserRole: () -> (UserRole) query;
+  /// Return the caller's own profile, or null if not yet registered.
+  getMyProfile: () -> (opt ProfileView) query;
+  /// Fetch a single post by id.
+  getPost: (id: nat) -> (opt PostView) query;
+  /// Return any user's public profile by principal.
+  getProfile: (id: UserId) -> (opt ProfileView) query;
+  isCallerAdmin: () -> (bool) query;
+  /// List all posts, newest first.
+  listPosts: () -> (vec PostView) query;
+  /// List all posts by a given author, newest first.
+  listPostsByAuthor: (author: UserId) -> (vec PostView) query;
+  schema: () -> (text) query;
+  /// Edit the caller's own post. Requires a signed-in caller.
+  updatePost: (id: nat, title: text, content: text) -> (Result_1);
+  /// Edit the caller's own profile information.
+  /// Requires a signed-in (non-anonymous) caller.
+  updateProfile: (displayName: text, username: text, bio: text) -> (Result);
+}

@@ -1,0 +1,90 @@
+// Version: 4.0.0
+type AccessControlState__201339279 =
+  {
+    var adminAssigned : Bool;
+    userRoles : Map__230067015<Principal, UserRole__91647283>
+  };
+type Data__44217153<K, V> = {var count : Nat__227979830; kvs : [var ?(K, V)]};
+type Internal__283199666<K, V> =
+  {children : [var ?Node__204828119<K, V>]; data : Data__44217153<K, V>};
+type Leaf__598469445<K, V> = {data : Data__44217153<K, V>};
+type Map__230067015<K, V> = Map__405889023<K, V>;
+type Map__405889023<K, V> = Map__603270868<K, V>;
+type Map__603270868<K, V> =
+  {var root : Node__204828119<K, V>; var size : Nat__227979830};
+type Nat__227979830 = Nat__920180692;
+type Nat__920180692 = Nat;
+type NewActor__388968026 =
+  {
+    accessControlState : AccessControlState__201339279;
+    postState : {var nextPostId : Nat};
+    posts : Map__230067015<Nat, Post__696879940>;
+    profiles : Map__230067015<Principal, Profile__942267073>
+  };
+type Node__204828119<K, V> =
+  {#internal : Internal__283199666<K, V>; #leaf : Leaf__598469445<K, V>};
+type OldActor__590747783 = {};
+type Post__495728462 =
+  {
+    author : UserId__158757552;
+    authorName : Text;
+    authorUsername : Text;
+    content : Text;
+    createdAt : Timestamp__301639476;
+    id : Nat;
+    title : Text;
+    updatedAt : Timestamp__301639476
+  };
+type Post__696879940 =
+  {
+    author : Principal;
+    authorName : Text;
+    authorUsername : Text;
+    content : Text;
+    createdAt : Int;
+    id : Nat;
+    title : Text;
+    updatedAt : Int
+  };
+type Profile__920465104 =
+  {
+    bio : Text;
+    createdAt : Timestamp__301639476;
+    displayName : Text;
+    id : UserId__158757552;
+    updatedAt : Timestamp__301639476;
+    username : Text
+  };
+type Profile__942267073 =
+  {
+    bio : Text;
+    createdAt : Int;
+    displayName : Text;
+    id : Principal;
+    updatedAt : Int;
+    username : Text
+  };
+type Timestamp__301639476 = Int;
+type UserId__158757552 = Principal;
+type UserRole__91647283 = {#admin; #guest; #user};
+{
+  "20261113_000000" : OldActor__590747783 -> NewActor__388968026
+}
+actor  {
+  stable accessControlState :
+    {
+      var adminAssigned : Bool;
+      userRoles : Map__230067015<Principal, UserRole__91647283>
+    };
+  stable postState : {var nextPostId : Nat};
+  stable posts :
+    {
+      var root : Node__204828119<Nat, Post__495728462>;
+      var size : Nat__227979830
+    };
+  stable profiles :
+    {
+      var root : Node__204828119<UserId__158757552, Profile__920465104>;
+      var size : Nat__227979830
+    }
+};

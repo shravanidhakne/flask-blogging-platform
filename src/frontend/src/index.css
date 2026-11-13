@@ -1,0 +1,184 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Fraunces";
+  src: url("/assets/fonts/Fraunces.woff2") format("woff2");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Satoshi";
+  src: url("/assets/fonts/Satoshi.woff2") format("woff2");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/assets/fonts/JetBrainsMono.woff2") format("woff2");
+  font-display: swap;
+}
+
+@layer base {
+  :root {
+    --font-display: "Fraunces", serif;
+    --font-body: "Satoshi", sans-serif;
+    --font-mono: "JetBrains Mono", monospace;
+    --radius: 0.5rem;
+
+    /* Ink & Ember — warm paper light mode */
+    --background: 0.965 0.012 78;
+    --foreground: 0.21 0.02 55;
+    --card: 0.985 0.006 78;
+    --card-foreground: 0.21 0.02 55;
+    --popover: 0.99 0.005 78;
+    --popover-foreground: 0.21 0.02 55;
+
+    --primary: 0.52 0.15 38;
+    --primary-foreground: 0.98 0.008 38;
+
+    --secondary: 0.92 0.018 78;
+    --secondary-foreground: 0.3 0.025 55;
+    --muted: 0.92 0.016 78;
+    --muted-foreground: 0.5 0.02 55;
+
+    --accent: 0.5 0.08 175;
+    --accent-foreground: 0.97 0.008 175;
+
+    --destructive: 0.53 0.2 27;
+    --destructive-foreground: 0.98 0.008 27;
+
+    --success: 0.56 0.13 155;
+    --warning: 0.72 0.14 78;
+
+    --border: 0.88 0.02 78;
+    --input: 0.88 0.02 78;
+    --ring: 0.52 0.15 38;
+
+    --chart-1: 0.52 0.15 38;
+    --chart-2: 0.5 0.08 175;
+    --chart-3: 0.62 0.12 60;
+    --chart-4: 0.45 0.1 250;
+    --chart-5: 0.6 0.14 20;
+
+    --sidebar: 0.985 0.006 78;
+    --sidebar-foreground: 0.21 0.02 55;
+    --sidebar-primary: 0.52 0.15 38;
+    --sidebar-primary-foreground: 0.98 0.008 38;
+    --sidebar-accent: 0.92 0.018 78;
+    --sidebar-accent-foreground: 0.3 0.025 55;
+    --sidebar-border: 0.88 0.02 78;
+    --sidebar-ring: 0.52 0.15 38;
+
+    --gradient-primary: linear-gradient(
+      135deg,
+      oklch(0.56 0.16 40),
+      oklch(0.46 0.13 28)
+    );
+    --gradient-subtle: linear-gradient(
+      180deg,
+      oklch(0.975 0.01 78),
+      oklch(0.945 0.016 78)
+    );
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .dark {
+    /* Ink & Ember — warm charcoal night mode */
+    --background: 0.16 0.012 50;
+    --foreground: 0.93 0.008 70;
+    --card: 0.2 0.014 50;
+    --card-foreground: 0.93 0.008 70;
+    --popover: 0.22 0.016 50;
+    --popover-foreground: 0.93 0.008 70;
+
+    --primary: 0.72 0.15 52;
+    --primary-foreground: 0.16 0.012 52;
+
+    --secondary: 0.24 0.018 50;
+    --secondary-foreground: 0.84 0.008 70;
+    --muted: 0.24 0.018 50;
+    --muted-foreground: 0.62 0.012 60;
+
+    --accent: 0.68 0.09 175;
+    --accent-foreground: 0.16 0.012 175;
+
+    --destructive: 0.62 0.18 27;
+    --destructive-foreground: 0.96 0.008 27;
+
+    --success: 0.68 0.14 155;
+    --warning: 0.78 0.14 78;
+
+    --border: 0.3 0.018 50;
+    --input: 0.3 0.018 50;
+    --ring: 0.72 0.15 52;
+
+    --chart-1: 0.72 0.15 52;
+    --chart-2: 0.68 0.09 175;
+    --chart-3: 0.72 0.13 60;
+    --chart-4: 0.6 0.12 250;
+    --chart-5: 0.68 0.15 20;
+
+    --sidebar: 0.2 0.014 50;
+    --sidebar-foreground: 0.93 0.008 70;
+    --sidebar-primary: 0.72 0.15 52;
+    --sidebar-primary-foreground: 0.16 0.012 52;
+    --sidebar-accent: 0.24 0.018 50;
+    --sidebar-accent-foreground: 0.84 0.008 70;
+    --sidebar-border: 0.3 0.018 50;
+    --sidebar-ring: 0.72 0.15 52;
+
+    --gradient-primary: linear-gradient(
+      135deg,
+      oklch(0.72 0.15 52),
+      oklch(0.6 0.14 34)
+    );
+    --gradient-subtle: linear-gradient(
+      180deg,
+      oklch(0.19 0.014 50),
+      oklch(0.16 0.012 50)
+    );
+  }
+
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display tracking-tight;
+  }
+}
+
+@layer utilities {
+  .transition-smooth {
+    transition: var(--transition-smooth);
+  }
+  .bg-gradient-primary {
+    background-image: var(--gradient-primary);
+  }
+  .bg-gradient-subtle {
+    background-image: var(--gradient-subtle);
+  }
+  .text-gradient-primary {
+    background-image: var(--gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .label-ember {
+    @apply text-xs font-semibold uppercase tracking-[0.18em] text-primary;
+  }
+  .paper-texture {
+    background-image: radial-gradient(
+      oklch(var(--foreground) / 0.025) 1px,
+      transparent 1px
+    );
+    background-size: 22px 22px;
+  }
+}
